@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="calculator">
+        <div class="screen">
+            <input type="number" placeholder="сальсулятор">
+            <p class="results"></p>
+            <button class="clear" >clear</button>
+        </div>
+        <div class="inputs">
+            <button class="numberButton">1</button>
+            <button class="numberButton">2</button>
+            <button class="numberButton">3</button>
+            <button class="operationButton">+</button>
+            <button class="numberButton">4</button>
+            <button class="numberButton">5</button>
+            <button class="numberButton">6</button>
+            <button class="operationButton">-</button>
+            <button class="numberButton">7</button>
+            <button class="numberButton">9</button>
+            <button class="numberButton">0</button>
+            <button class="operationButton">*</button>
+            <button id="eq">=</button>
+            <button class="operationButton">/</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const
+                inputValue = document.querySelector('.screen input'),
+                operationButton = document.querySelectorAll('.operationButton'),
+                numberButton = document.querySelectorAll('.numberButton');
+
+            let 
+                operationType,
+                a,
+                b,
+                result;
+
+            function addingOperators (event) {
+
+                if (!a) {
+                    a = +inputValue.value;
+                }
+
+                inputValue.value = "";
+
+                operationType = this.innerHTML
+                
+            };
+
+            function calculation () {
+
+                if (!b) {
+                    b = +inputValue.value;
+                
+                    if (operationType === "+") {
+                        result = a + b;
+
+                    } else if (operationType === "-") {
+                        result = a - b;
+                    } else if (operationType === "*") {
+                        result = a * b;
+                    } else if (operationType === "/") {
+                        result = a / b;
+                    }
+                }
+
+                inputValue.value = result;
+                a = b = "";
+            }
+
+            function addToScreen (event) {
+                inputValue.value += this.innerHTML;
+            }
+
+            function clear () {
+                inputValue.value = "";
+                a = b = "";
+            }
+            
+            operationButton.forEach(el => {el.addEventListener('click', addingOperators);})
+            numberButton.forEach(el => {el.addEventListener('click', addToScreen);})
+            document.querySelector('.clear').addEventListener('click', clear);
+            document.querySelector('#eq').addEventListener('click', calculation);
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+            padding: 20px;
+            overflow: hidden;
+        }
+            body:after {
+                content: '';
+                width: 100%;
+                height: 300%;
+                top: 0; left: 0;
+                position: absolute;
+                display: block;
+                background: #59C173;
+                background: -webkit-linear-gradient(to top, #5D26C1, #a17fe0, #59C173);
+                background: linear-gradient(to top, #5D26C1, #a17fe0, #59C173);
+                animation: body 15s infinite;
+                z-index: 1;
+            }
+
+        .calculator {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 400px;
+            height: 550px;
+            margin: 5% auto;
+            border-radius: 30px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 450px) {
+            .calculator {
+                width: 100%;
+            }
+        }
+
+        .screen {            
+            display: flex;
+            height: 30px;
+            margin-top: 30px;
+            justify-content: space-between;
+            position: relative;
+        }
+            .screen:after {
+                content: '';
+                width: 10px;
+                height: 10px;
+                position: absolute; top: -29px;
+                display: block;
+                border-radius: 50%;
+                background-color: #fff;
+                animation: processing 3s infinite;
+            }
+
+            .screen p {
+                font-family: arial;
+                width: auto;
+                position: absolute;
+                left: 10px; top: 5px;
+                transition: .3s;
+                transform: scale(1) translate(0, 0px);
+            }
+
+            .screen input {
+                width: 70%;
+                border: none;
+                background-color: rgba(255, 255, 255, .5);
+                border-radius: 7px;
+                outline: none;
+                padding-left: 10px;
+                color: white;
+                transition: .3s;
+                box-sizing: border-box;
+                appearance: none;
+            }
+
+                .screen input:focus-within ~ p {
+                    transform: scale(0) translate(-100%, 0px);
+                }
+
+            .screen button {            
+                border: none;
+                width: 90px;
+                background-color: rgba(255, 255, 255, .7);
+                border-radius: 7px;
+                letter-spacing: 4px;
+                text-align: center;
+                outline: none;
+                color: #ffc883;
+                text-transform: uppercase;
+                font-weight: 700;
+                padding: 3px 0 0 3px;
+                cursor: pointer;
+                transition: .3s;
+            }
+                .screen button:hover {
+                    background-color: rgba(255, 255, 255, .8);
+                }
+
+        .inputs {
+            width: 360px;
+            display: flex;
+            justify-content: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 70px;
+        }
+            @media (max-width: 450px) {
+                .inputs {
+                    width: 100%;
+                }
+            }
+        
+            .inputs button {
+                width: 21%;
+                height: 65px;
+                border: none;
+                outline: none;
+                background-color: rgba(255, 255, 255, .5);
+                border-radius: 10px;
+                margin-top: 10px;
+                cursor: pointer;
+                transition: .3s;
+            }   
+                .inputs button:hover {
+                    background-color: rgba(255, 255, 255, .8);
+                }
+
+            .inputs button#eq {
+                width: 74%;
+            }
+
+        @keyframes processing {
+            from {
+                box-shadow: 0px 0 0px rgba(255, 255, 255, .5), 0px 0 0px rgba(255, 255, 255, .2);
+            }
+            25% {
+                box-shadow: 15px 0 0px rgba(255, 255, 255, .5), 15px 0 0px rgba(255, 255, 255, .2);
+            }
+            50% {
+                box-shadow: 15px 0 0px rgba(255, 255, 255, .5), 30px 0 0px rgba(255, 255, 255, .2);
+            }
+            75% {
+                box-shadow: 15px 0 0px rgba(255, 255, 255, .5), 15px 0 0px rgba(255, 255, 255, .2);
+            }
+            to {
+                box-shadow: 0px 0 0px rgba(255, 255, 255, .5), 0px 0 0px rgba(255, 255, 255, .2);
+            }
+        }
+
+        @keyframes body {
+            from {
+                top: 0%;
+            }
+
+            50% {
+                top: -195%;
+            }
+
+            to {
+                top: 0%;
+            }
+        }
+
+    </style>
+</body>
+</html>
